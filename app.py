@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 import json
 from datetime import datetime, date
 import os
@@ -28,7 +28,7 @@ def index():
 
 @app.route('/add_plant', methods=['POST'])
 def add_plant():
-    plants = load_plants()
+    plants = load_plants() # TODO: cpu ineficient (saves memory on average)
     plant_id = str(len(plants) + 1)
     plants[plant_id] = {
         'last_watered': None,
@@ -39,7 +39,7 @@ def add_plant():
 
 @app.route('/water/<plant_id>', methods=['POST'])
 def water_plant(plant_id):
-    plants = load_plants()
+    plants = load_plants() # TODO: same as above
     if plant_id in plants:
         watering_time = request.form.get('watering_time')
         if watering_time:
