@@ -50,10 +50,10 @@ def water_plant(plant_id):
 def plant_status(plant_id):
     plants = load_plants()
     plant = plants.get(plant_id, {})
-    last_watered = None
+    last_watered: datetime | None = None
     if plant.get('last_watered'):
         last_watered = parse(plant['last_watered'])
-    now = datetime.now()
+    now: datetime = datetime.now()
     return render_template('plant.html', 
                          plant_id=plant_id, 
                          plant=plant, 
