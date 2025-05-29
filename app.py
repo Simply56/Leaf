@@ -42,7 +42,11 @@ def add_plant():
 def water_plant(plant_id):
     plants = load_plants()
     if plant_id in plants:
-        plants[plant_id]['last_watered'] = datetime.now().isoformat()
+        watering_time = request.form.get('watering_time')
+        if watering_time:
+            plants[plant_id]['last_watered'] = watering_time
+        else:
+            plants[plant_id]['last_watered'] = datetime.now().isoformat()
         save_plants(plants)
     return redirect(url_for('plant_status', plant_id=plant_id))
 

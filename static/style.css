@@ -103,6 +103,25 @@ button:hover {
     background-color: #1976D2;
 }
 
+.datetime-picker {
+    margin: 20px 0;
+}
+
+.datetime-picker label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.datetime-picker input[type="datetime-local"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 .qr-info {
     background: var(--card-background);
     padding: 20px;

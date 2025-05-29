@@ -14,7 +14,11 @@
     </div>
 
     <form action="{{ url_for('water_plant', plant_id=plant_id) }}" method="post">
-        <button type="submit" class="water-button">I Just Watered This Plant</button>
+        <div class="datetime-picker">
+            <label for="watering_time">When did you water this plant?</label>
+            <input type="datetime-local" id="watering_time" name="watering_time" value="{{ now.strftime('%Y-%m-%dT%H:%M') }}">
+        </div>
+        <button type="submit" class="water-button">Log Watering</button>
     </form>
 
     <div class="qr-info">
