@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Plant Watering Tracker</h1>
+
+<div class="add-plant">
+    <h2>Add New Plant</h2>
+    <form action="{{ url_for('add_plant') }}" method="post">
+        <input type="text" name="name" placeholder="Plant Name" required>
+        <button type="submit">Add Plant</button>
+    </form>
+</div>
+
+<div class="plants-list">
+    {% if plants %}
+        {% for plant_id, plant in plants.items() %}
+            <div class="plant-card">
+                <h3>{{ plant.name }}</h3>
+                {% if plant.last_watered %}
+                    <p>Last watered: {{ plant.last_watered.split('T')[0] }}</p>
+                {% else %}
+                    <p>Never watered</p>
+                {% endif %}
+                <a href="{{ url_for('plant_status', plant_id=plant_id) }}" class="button">View Details</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No plants added yet.</p>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="plant-status">
+    <h1>{{ plant.name }}</h1>
+    
+    <div class="watering-info">
+        {% if last_watered %}
+            <p>Last watered: {{ last_watered.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p>Days since last watering: {{ (now - last_watered).days }}</p>
+        {% else %}
+            <p>This plant has never been watered.</p>
+        {% endif %}
+    </div>
+
+    <form action="{{ url_for('water_plant', plant_id=plant_id) }}" method="post">
+        <button type="submit" class="water-button">I Just Watered This Plant</button>
+    </form>
+
+    <div class="qr-info">
+        <h2>QR Code Information</h2>
+        <p>Paste this into a QR code generator and stick it on it's pot</p>
+        <p class="qr-url">{{ request.url_root }}plant/{{ plant_id }}</p>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="button">Back to Plants</a>
+</div>
+{% endblock %} 

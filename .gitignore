@@ -1,0 +1,10 @@
+*
+
+!static
+!static/**
+!templates
+!templates/**
+
+!app.py
+!requirements.txt
+!.gitignore
