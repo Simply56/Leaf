@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
-from datetime import datetime
-from dateutil.parser import parse
+from datetime import datetime, date
 import os
 
 app = Flask(__name__)
@@ -46,7 +45,7 @@ def water_plant(plant_id):
         if watering_time:
             plants[plant_id]['last_watered'] = watering_time
         else:
-            plants[plant_id]['last_watered'] = datetime.now().isoformat()
+            plants[plant_id]['last_watered'] = date.today().isoformat()
         save_plants(plants)
     return redirect(url_for('plant_status', plant_id=plant_id))
 
@@ -54,15 +53,15 @@ def water_plant(plant_id):
 def plant_status(plant_id):
     plants = load_plants()
     plant = plants.get(plant_id, {})
-    last_watered: datetime | None = None
+    last_watered = None
     if plant.get('last_watered'):
-        last_watered = parse(plant['last_watered'])
-    now: datetime = datetime.now()
+        last_watered = datetime.strptime(plant['last_watered'], '%Y-%m-%d').date()
+    today = date.today()
     return render_template('plant.html', 
                          plant_id=plant_id, 
                          plant=plant, 
                          last_watered=last_watered,
-                         now=now)
+                         now=today)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False) 

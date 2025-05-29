@@ -6,7 +6,7 @@
     
     <div class="watering-info">
         {% if last_watered %}
-            <p>Last watered: {{ last_watered.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>
             <p>Days since last watering: {{ (now - last_watered).days }}</p>
         {% else %}
             <p>This plant has never been watered.</p>
@@ -16,7 +16,7 @@
     <form action="{{ url_for('water_plant', plant_id=plant_id) }}" method="post">
         <div class="datetime-picker">
             <label for="watering_time">When did you water this plant?</label>
-            <input type="datetime-local" id="watering_time" name="watering_time" value="{{ now.strftime('%Y-%m-%dT%H:%M') }}">
+            <input type="date" id="watering_time" name="watering_time" value="{{ now.isoformat() }}">
         </div>
         <button type="submit" class="water-button">Log Watering</button>
     </form>
