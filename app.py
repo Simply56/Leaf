@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import json
 from datetime import datetime, date
 import os
+from werkzeug import Response
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -47,13 +48,13 @@ def save_plants(plants):
 
 
 @app.route("/")
-def index():
+def index() -> str:
     plants = load_plants()
     return render_template("index.html", plants=plants)
 
 
 @app.route("/add_plant", methods=["POST"])
-def add_plant():
+def add_plant() -> Response:
     plants = load_plants()
     plant_id = str(len(plants) + 1)
     plants[plant_id] = {
@@ -66,7 +67,7 @@ def add_plant():
 
 
 @app.route("/water/<plant_id>", methods=["POST"])
-def water_plant(plant_id):
+def water_plant(plant_id) -> Response:
     plants = load_plants()
     if plant_id in plants:
         watering_time = request.form.get("watering_time")
@@ -79,7 +80,7 @@ def water_plant(plant_id):
 
 
 @app.route("/upload_image/<plant_id>", methods=["POST"])
-def upload_image(plant_id):
+def upload_image(plant_id) -> Response:
     plants = load_plants()
     if plant_id in plants and "image" in request.files:
         file = request.files["image"]
@@ -102,7 +103,7 @@ def upload_image(plant_id):
 
 
 @app.route("/plant/<plant_id>")
-def plant_status(plant_id):
+def plant_status(plant_id) -> str:
     plants = load_plants()
     plant = plants.get(plant_id, {})
     last_watered = None
