@@ -4,6 +4,8 @@
 <div class="plant-status">
     <h1>{{ plant.name }}</h1>
     
+    <img src="{{ url_for('static', filename=plant.image_path) }}" alt="{{ plant.name }}" class="plant-detail-image">
+    
     <div class="watering-info">
         {% if last_watered %}
             <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>

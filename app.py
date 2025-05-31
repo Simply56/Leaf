@@ -10,6 +10,7 @@ if not os.path.exists('data'):
     os.makedirs('data')
 
 DATA_FILE = 'data/plants.json'
+DEFAULT_PLANT_IMAGE = 'icon.png'
 
 def load_plants():
     if os.path.exists(DATA_FILE):
@@ -32,7 +33,8 @@ def add_plant():
     plant_id = str(len(plants) + 1)
     plants[plant_id] = {
         'last_watered': None,
-        'name': request.form.get('name', f'Plant {plant_id}')
+        'name': request.form.get('name', f'Plant {plant_id}'),
+        'image_path': DEFAULT_PLANT_IMAGE
     }
     save_plants(plants)
     return redirect(url_for('index'))

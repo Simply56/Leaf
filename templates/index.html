@@ -15,6 +15,7 @@
     {% if plants %}
         {% for plant_id, plant in plants.items() %}
             <div class="plant-card">
+                <img src="{{ url_for('static', filename=plant.image_path) }}" alt="{{ plant.name }}" class="plant-image">
                 <h3>{{ plant.name }}</h3>
                 {% if plant.last_watered %}
                     <p>Last watered: {{ plant.last_watered.split('T')[0] }}</p>
