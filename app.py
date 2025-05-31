@@ -29,13 +29,15 @@ def allowed_file(filename):
 
 
 def delete_old_image(image_path):
-    if image_path and image_path != DEFAULT_PLANT_IMAGE:
+    if image_path == DEFAULT_PLANT_IMAGE:
+        return
+    if image_path :
         full_path = os.path.join("static", image_path)
         if os.path.exists(full_path):
             os.remove(full_path)
 
 
-def load_plants():
+def load_plants() -> dict[str, dict]:
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
             return json.load(f)
@@ -56,7 +58,7 @@ def index() -> str:
 @app.route("/add_plant", methods=["POST"])
 def add_plant() -> Response:
     plants = load_plants()
-    plant_id = str(len(plants) + 1)
+    plant_id = str(max(map(int, plants.keys())) + 1)
     plants[plant_id] = {
         "last_watered": None,
         "name": request.form.get("name", f"Plant {plant_id}"),
@@ -120,6 +122,22 @@ def plant_status(plant_id) -> str:
         now=today,
     )
 
+
+@app.route("/delete/<plant_id>", methods=["POST"])
+def delete_plant(plant_id):
+    plants = load_plants()
+    plant = plants.get(plant_id, {})
+
+    # Delete the image
+    delete_old_image(plant["image_path"])
+    try:
+        plants.pop(plant_id)
+    except KeyError:
+        pass
+    
+
+    save_plants(plants)
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     if "TMUX" in os.environ:
