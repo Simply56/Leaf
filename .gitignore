@@ -1,7 +1,8 @@
 *
 
 !static
-!static/**
+!static/icon.png
+!static/style.css
 !templates
 !templates/**
 

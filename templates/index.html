@@ -15,7 +15,15 @@
     {% if plants %}
         {% for plant_id, plant in plants.items() %}
             <div class="plant-card">
-                <img src="{{ url_for('static', filename=plant.image_path) }}" alt="{{ plant.name }}" class="plant-image">
+                <form id="imageUploadForm{{ plant_id }}" action="{{ url_for('upload_image', plant_id=plant_id) }}" method="post" enctype="multipart/form-data" style="display: none;">
+                    <input type="file" id="imageInput{{ plant_id }}" name="image" accept="image/*" onchange="this.form.submit()">
+                </form>
+                <img src="{{ url_for('static', filename=plant.image_path) }}" 
+                     alt="{{ plant.name }}" 
+                     class="plant-image"
+                     onclick="document.getElementById('imageInput{{ plant_id }}').click()"
+                     style="cursor: pointer;"
+                     title="Click to change image">
                 <h3>{{ plant.name }}</h3>
                 {% if plant.last_watered %}
                     <p>Last watered: {{ plant.last_watered.split('T')[0] }}</p>
