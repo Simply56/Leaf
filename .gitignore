@@ -8,6 +8,9 @@
 
 !app.py
 !requirements.txt
+
+!screenshots/
+!screenshots/**
 !.gitignore
 !README.md
 !LICENSE

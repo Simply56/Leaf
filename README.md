@@ -1,7 +1,9 @@
 # Leaf
-
 The name is short for "Log every aquatic feeding", it is a web application to help you keep track of your plants watering so that you don't forget to water them or water them too much. One way you can do this is by printing a qr code for each plant and sticking it on it's pot, this is useful if you have a lot of plants.
 
+![alt text](screenshots/homepage.png)
+![alt text](screenshots/plant_details.png)
+![alt text](screenshots/generated_qr_codes.png)
 
 ## Features
 
