@@ -136,23 +136,22 @@ def delete_plant(plant_id):
 def generate_qr_codes():
     plants = load_plants()
     qr_codes = {}
-    
+
     for plant_id, plant in plants.items():
         # Generate QR code
-        plant_url = request.host_url.rstrip('/') + url_for('plant_status', plant_id=plant_id)
+        plant_url = request.host_url.rstrip("/") + url_for(
+            "plant_status", plant_id=plant_id
+        )
         qr = qrcode.QRCode(version=1, box_size=1, border=1)
         qr.add_data(plant_url)
         qr.make(fit=True)
-        
+
         # Get QR code as text
         qr_text = qr.get_matrix()
-        qr_codes[plant_id] = {
-            'name': plant['name'],
-            'qr': qr_text
-        }
-    
-    return render_template('qr_codes.html', qr_codes=qr_codes)
+        qr_codes[plant_id] = {"name": plant["name"], "qr": qr_text}
+
+    return render_template("qr_codes.html", qr_codes=qr_codes)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=False)

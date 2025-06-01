@@ -218,25 +218,20 @@ button:hover {
 
 .qr-codes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 15px;
 }
 
 .qr-code-container {
     text-align: center;
-    padding: 15px;
-    background: var(--card-background);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
 }
 
 .qr-code {
     display: inline-block;
-    margin: 10px 0;
-    padding: 10px;
-    background: white;
-    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 5px;
 }
 
 .qr-row {
@@ -245,8 +240,8 @@ button:hover {
 }
 
 .qr-cell {
-    width: 8px;
-    height: 8px;
+    width: 5px;
+    height: 5px;
 }
 
 .qr-cell.black {
@@ -258,12 +253,57 @@ button:hover {
 }
 
 @media print {
+    body {
+        background: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .qr-codes-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        padding: 15px;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+
     .qr-code-container {
         break-inside: avoid;
         page-break-inside: avoid;
+        background: none;
+        box-shadow: none;
+        width: 100%;
+        max-width: 100%;
+        padding: 5px;
     }
-    
+
     .qr-code {
         border: 1px solid black;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        transform: scale(0.8);
+        transform-origin: center;
+        margin: 2px 0;
+        padding: 2px;
+    }
+
+    .qr-cell {
+        width: 4px;
+        height: 4px;
+    }
+
+    .qr-cell.black {
+        background-color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .qr-cell.white {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 }
