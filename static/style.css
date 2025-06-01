@@ -215,3 +215,55 @@ button:hover {
 .qr-button:hover {
     background-color: #1976D2;
 }
+
+.qr-codes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.qr-code-container {
+    text-align: center;
+    padding: 15px;
+    background: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+}
+
+.qr-row {
+    display: flex;
+    line-height: 1;
+}
+
+.qr-cell {
+    width: 8px;
+    height: 8px;
+}
+
+.qr-cell.black {
+    background-color: black;
+}
+
+.qr-cell.white {
+    background-color: white;
+}
+
+@media print {
+    .qr-code-container {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .qr-code {
+        border: 1px solid black;
+    }
+}

@@ -4,10 +4,6 @@ from datetime import datetime, date
 import os
 from werkzeug.utils import secure_filename
 import qrcode
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.units import inch
 
 app = Flask(__name__)
 
@@ -139,59 +135,23 @@ def delete_plant(plant_id):
 @app.route("/generate_qr_codes")
 def generate_qr_codes():
     plants = load_plants()
-
-    # Create a BytesIO buffer to store the PDF
-    buffer = BytesIO()
-    # Create the PDF object
-    p = canvas.Canvas(buffer, pagesize=letter)
-
-    # Set up grid parameters
-    qr_size = 1.5 * inch
-    margin = 0.5 * inch
-    cols = 3
-    rows = 4
-    current_row = 0
-    current_col = 0
-
+    qr_codes = {}
+    
     for plant_id, plant in plants.items():
         # Generate QR code
-        qr = qrcode.QRCode(version=1, box_size=10, border=5)
-        plant_url = request.host_url.rstrip("/") + url_for(
-            "plant_status", plant_id=plant_id
-        )
+        plant_url = request.host_url.rstrip('/') + url_for('plant_status', plant_id=plant_id)
+        qr = qrcode.QRCode(version=1, box_size=1, border=1)
         qr.add_data(plant_url)
         qr.make(fit=True)
-        qr_img = qr.make_image(fill_color="black", back_color="white")
-
-        # Calculate position
-        x = margin + (current_col * (qr_size + margin))
-        y = letter[1] - margin - (current_row * (qr_size + margin)) - qr_size
-
-        # Draw QR code directly using the PIL Image
-        p.drawInlineImage(qr_img, x, y, width=qr_size, height=qr_size)
-
-        # Draw plant name below QR code
-        p.setFont("Helvetica", 10)
-        p.drawString(x, y - 15, plant["name"])
-
-        # Update position
-        current_col += 1
-        if current_col >= cols:
-            current_col = 0
-            current_row += 1
-            if current_row >= rows:
-                p.showPage()
-                current_row = 0
-
-    p.save()
-    buffer.seek(0)
-
-    return send_file(
-        buffer,
-        mimetype="application/pdf",
-        as_attachment=True,
-        download_name="plant_qr_codes.pdf",
-    )
+        
+        # Get QR code as text
+        qr_text = qr.get_matrix()
+        qr_codes[plant_id] = {
+            'name': plant['name'],
+            'qr': qr_text
+        }
+    
+    return render_template('qr_codes.html', qr_codes=qr_codes)
 
 
 if __name__ == "__main__":

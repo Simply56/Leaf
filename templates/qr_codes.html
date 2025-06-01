@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Plant QR Codes</h1>
+<p>Print this page and cut out the QR codes to attach to your plant pots.</p>
+
+<div class="qr-codes-grid">
+    {% for plant_id, data in qr_codes.items() %}
+    <div class="qr-code-container">
+        <h3>{{ data.name }}</h3>
+        <div class="qr-code">
+            {% for row in data.qr %}
+            <div class="qr-row">
+                {% for cell in row %}
+                <div class="qr-cell {% if cell %}black{% else %}white{% endif %}"></div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 
