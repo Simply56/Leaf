@@ -11,9 +11,6 @@
     </form>
 </div>
 
-<div class="qr-download">
-    <a href="{{ url_for('generate_qr_codes') }}" class="button qr-button">Download Plant QR Codes</a>
-</div>
 
 <div class="plants-list">
     {% if plants %}
@@ -40,5 +37,8 @@
     {% else %}
         <p>No plants added yet.</p>
     {% endif %}
+</div>
+<div class="qr-download">
+    <a href="{{ url_for('generate_qr_codes') }}" class="button qr-button">Download Plant QR Codes</a>
 </div>
 {% endblock %} 
