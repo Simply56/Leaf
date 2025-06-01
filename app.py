@@ -37,7 +37,7 @@ def delete_old_image(image_path):
             os.remove(full_path)
 
 
-def load_plants() -> dict[str, dict]:
+def load_plants() :
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
             return json.load(f)
@@ -50,13 +50,13 @@ def save_plants(plants):
 
 
 @app.route("/")
-def index() -> str:
+def index() :
     plants = load_plants()
     return render_template("index.html", plants=plants)
 
 
 @app.route("/add_plant", methods=["POST"])
-def add_plant() -> Response:
+def add_plant() :
     plants = load_plants()
     plant_id = str(max(map(int, set(plants.keys()).union({0}))) + 1)
     plants[plant_id] = {
@@ -69,7 +69,7 @@ def add_plant() -> Response:
 
 
 @app.route("/water/<plant_id>", methods=["POST"])
-def water_plant(plant_id) -> Response:
+def water_plant(plant_id) :
     plants = load_plants()
     if plant_id in plants:
         watering_time = request.form.get("watering_time")
@@ -82,7 +82,7 @@ def water_plant(plant_id) -> Response:
 
 
 @app.route("/upload_image/<plant_id>", methods=["POST"])
-def upload_image(plant_id) -> Response:
+def upload_image(plant_id) :
     plants = load_plants()
     if plant_id in plants and "image" in request.files:
         file = request.files["image"]
@@ -105,7 +105,7 @@ def upload_image(plant_id) -> Response:
 
 
 @app.route("/plant/<plant_id>")
-def plant_status(plant_id) -> str:
+def plant_status(plant_id) :
     plants = load_plants()
     plant = plants.get(plant_id, {})
     last_watered = None
