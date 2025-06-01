@@ -3,24 +3,21 @@
 {% block content %}
 <div class="plant-status">
     <h1>{{ plant.name }}</h1>
-    
-    <form id="imageUploadForm" action="{{ url_for('upload_image', plant_id=plant_id) }}" method="post" enctype="multipart/form-data" style="display: none;">
+
+    <form id="imageUploadForm" action="{{ url_for('upload_image', plant_id=plant_id) }}" method="post"
+        enctype="multipart/form-data" style="display: none;">
         <input type="file" id="imageInput" name="image" accept="image/*" onchange="this.form.submit()">
     </form>
-    
-    <img src="{{ url_for('static', filename=plant.image_path) }}" 
-         alt="{{ plant.name }}" 
-         class="plant-detail-image"
-         onclick="document.getElementById('imageInput').click()"
-         style="cursor: pointer;"
-         title="Click to change image">
-    
+
+    <img src="{{ url_for('static', filename=plant.image_path) }}" alt="{{ plant.name }}" class="plant-detail-image"
+        onclick="document.getElementById('imageInput').click()" style="cursor: pointer;" title="Click to change image">
+
     <div class="watering-info">
         {% if last_watered %}
-            <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>
-            <p>Days since last watering: {{ (now - last_watered).days }}</p>
+        <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>
+        <p>Days since last watering: {{ (now - last_watered).days }}</p>
         {% else %}
-            <p>This plant has never been watered.</p>
+        <p>This plant has never been watered.</p>
         {% endif %}
     </div>
 
@@ -38,6 +35,20 @@
         <p class="qr-url">{{ request.url_root }}plant/{{ plant_id }}</p>
     </div>
 
-    <a href="{{ url_for('index') }}" class="button">Back to Plants</a>
+    <div class="button-container">
+        <form action="{{ url_for('index') }}" method="get">
+            <button type="submit" class="button">
+                Back to Plants
+            </button>
+        </form>
+
+        <form action="{{ url_for('delete_plant', plant_id=plant_id) }}" method="post"
+            onsubmit="return confirm('Are you sure you want to delete this plant?');" class="delete-form">
+            <button type="submit" class="button delete-button">
+                Delete {{ plant["name"] }}
+            </button>
+        </form>
+    </div>
+
 </div>
-{% endblock %} 
+{% endblock %}

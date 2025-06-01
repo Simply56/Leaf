@@ -58,7 +58,7 @@ def index() -> str:
 @app.route("/add_plant", methods=["POST"])
 def add_plant() -> Response:
     plants = load_plants()
-    plant_id = str(max(map(int, plants.keys())) + 1)
+    plant_id = str(max(map(int, set(plants.keys()).union({0}))) + 1)
     plants[plant_id] = {
         "last_watered": None,
         "name": request.form.get("name", f"Plant {plant_id}"),
