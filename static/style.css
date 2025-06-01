@@ -200,3 +200,18 @@ button:hover {
 .delete-button:hover {
     background-color: #c82333;
 }
+
+.qr-download {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.qr-button {
+    background-color: #2196F3;
+    font-size: 18px;
+    padding: 12px 24px;
+}
+
+.qr-button:hover {
+    background-color: #1976D2;
+}
