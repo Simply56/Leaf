@@ -22,7 +22,10 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 
 def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
 
 
 def delete_old_image(image_path):
@@ -93,7 +96,9 @@ def upload_image(plant_id):
             file.save(file_path)
 
             # Update plant data
-            plants[plant_id]["image_path"] = os.path.join("plant_images", filename)
+            plants[plant_id]["image_path"] = os.path.join(
+                "plant_images", filename
+            )
             save_plants(plants)
 
     return redirect(url_for("plant_status", plant_id=plant_id))
@@ -105,7 +110,9 @@ def plant_status(plant_id):
     plant = plants.get(plant_id, {})
     last_watered = None
     if plant.get("last_watered"):
-        last_watered = datetime.strptime(plant["last_watered"], "%Y-%m-%d").date()
+        last_watered = datetime.strptime(
+            plant["last_watered"], "%Y-%m-%d"
+        ).date()
     today = date.today()
     return render_template(
         "plant.html",
