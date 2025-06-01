@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import json
 from datetime import datetime, date
 import os
-from werkzeug import Response
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
