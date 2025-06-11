@@ -5,6 +5,9 @@ import os
 from werkzeug.utils import secure_filename
 import qrcode
 
+# TODO: Shift the color of days since last watering from green to red based on the time passed
+# TODO: Allow custom sorting on the home page (alphabetical, days since last watered, when was the plant added)
+
 app = Flask(__name__)
 
 # Ensure the data directory exists
