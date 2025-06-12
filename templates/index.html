@@ -26,11 +26,14 @@
             title="Click to change image">
         <h3>{{ plant.name }}</h3>
         {% if plant.last_watered %}
-        <p>Last watered: {{ plant.last_watered.split('T')[0] }}</p>
-        {% else %}
-        <p>Never watered</p>
-        {% endif %}
-        <a href="{{ url_for('plant_status', plant_id=plant_id) }}" class="button">View Details</a>
+        {% set max_value = 10 %}
+        {% set ratio = (plant.watered_ago / max_value) if plant.watered_ago < max_value else 1 %} {% set red=(ratio * 255) | int %} {% set
+            green=((1 - ratio) * 255) | int %} {% set color='rgb({}, {}, 0)' .format(red, green) %} 
+            <p>Days since last watering: <span style="color: {{ color }}">{{ plant.watered_ago }}</span></p>
+            {% else %}
+            <p>Never watered</p>
+            {% endif %}
+            <a href="{{ url_for('plant_status', plant_id=plant_id) }}" class="button">View Details</a>
     </div>
     {% endfor %}
     {% else %}

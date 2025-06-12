@@ -10,7 +10,6 @@ import qrcode
 This project specificaly avoids some new features because it is mean to be run on older versions of Python
 """
 
-# TODO: Shift the color of days since last watering from green to red based on the time passed
 # TODO: Allow custom sorting on the home page (alphabetical, days since last watered, when was the plant added)
 
 app = Flask(__name__)
@@ -45,9 +44,25 @@ def delete_old_image(image_path):
             os.remove(full_path)
 
 
+def compute_watered_ago(plants):
+    now = date.today()
+    for id, plant in plants.items():
+        if plant["last_watered"] is None:
+            continue
+        last_watered_date = datetime.strptime(
+            plant["last_watered"], "%Y-%m-%d"
+        ).date()
+        watered_ago = (now - last_watered_date).days
+
+        plant["watered_ago"] = watered_ago
+        print(watered_ago)
+    return plants
+
+
 def load_plants():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
+            raw_load = dict()
             try:
                 raw_load = json.load(f)
             except json.JSONDecodeError:
@@ -55,7 +70,7 @@ def load_plants():
             if raw_load is None:
                 return {}
 
-            return raw_load
+            return compute_watered_ago(raw_load)
     return {}
 
 
