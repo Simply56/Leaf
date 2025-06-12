@@ -6,6 +6,10 @@ import os
 from werkzeug.utils import secure_filename
 import qrcode
 
+"""
+This project specificaly avoids some new features because it is mean to be run on older versions of Python
+"""
+
 # TODO: Shift the color of days since last watering from green to red based on the time passed
 # TODO: Allow custom sorting on the home page (alphabetical, days since last watered, when was the plant added)
 
@@ -44,7 +48,14 @@ def delete_old_image(image_path):
 def load_plants():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
-            return json.load(f)
+            try:
+                raw_load = json.load(f)
+            except json.JSONDecodeError:
+                return {}
+            if raw_load is None:
+                return {}
+
+            return raw_load
     return {}
 
 
