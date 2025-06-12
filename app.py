@@ -165,6 +165,7 @@ def generate_qr_codes():
 
 
 if __name__ == "__main__":
+    # Example: python3 app.py debug
     if len(sys.argv) == 2 and sys.argv[1].lower() == "debug":
         app.run(host="0.0.0.0", port=5000, debug=True)
     else:
