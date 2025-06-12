@@ -25,7 +25,7 @@ if not os.path.exists(PLANT_IMAGES_DIR):
 
 DATA_FILE = "data/plants.json"
 DEFAULT_PLANT_IMAGE = "icon.png"
-ALLOWED_EXTENSIONS: set[str] = {"png", "jpg", "jpeg", "gif"}
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
 
 def allowed_file(filename):
