@@ -55,7 +55,6 @@ def compute_watered_ago(plants):
         watered_ago = (now - last_watered_date).days
 
         plant["watered_ago"] = watered_ago
-        print(watered_ago)
     return plants
 
 
@@ -78,6 +77,11 @@ def save_plants(plants):
     with open(DATA_FILE, "w") as f:
         json.dump(plants, f)
 
+def value_to_color(value: float, max_value: float = 10) -> str:
+    ratio = min(value / max_value, 1)
+    hue = int(120 - 120 * ratio)  # 120 = green, 0 = red
+    return f"hsl({hue}, 100%, 40%)"
+app.jinja_env.globals['value_to_color'] = value_to_color  # as a global function
 
 @app.route("/")
 def index():

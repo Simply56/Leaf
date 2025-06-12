@@ -15,7 +15,7 @@
     <div class="watering-info">
         {% if last_watered %}
         <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>
-        <p>Days since last watering: {{ (now - last_watered).days }}</p>
+        <p>Days since last watering: <span style="color: {{ value_to_color(plant.watered_ago) }}">{{ plant.watered_ago }}</span></p>
         {% else %}
         <p>This plant has never been watered.</p>
         {% endif %}
