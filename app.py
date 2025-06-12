@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import sys
 import json
 from datetime import datetime, date
 import os
@@ -157,11 +158,14 @@ def generate_qr_codes():
         qr.make(fit=True)
 
         # Get QR code as text
-        qr_text = qr.get_matrix()
+        qr_text: list[list[bool]] = qr.get_matrix()
         qr_codes[plant_id] = {"name": plant["name"], "qr": qr_text}
 
     return render_template("qr_codes.html", qr_codes=qr_codes)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    if len(sys.argv) == 2 and sys.argv[1].lower() == "debug":
+        app.run(host="0.0.0.0", port=5000, debug=True)
+    else:
+        app.run(host="0.0.0.0", port=5000, debug=False)
