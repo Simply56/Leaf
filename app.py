@@ -188,7 +188,7 @@ def generate_qr_codes():
         qr.make(fit=True)
 
         # Get QR code as text
-        qr_text: list[list[bool]] = qr.get_matrix()
+        qr_text  = qr.get_matrix()
         qr_codes[plant_id] = {"name": plant["name"], "qr": qr_text}
 
     return render_template("qr_codes.html", qr_codes=qr_codes)
