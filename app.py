@@ -86,7 +86,7 @@ app.jinja_env.globals['value_to_color'] = value_to_color  # as a global function
 @app.route("/")
 def index():
     plants = load_plants()
-    return render_template("index.html", plants=plants)
+    return render_template("index.j2", plants=plants)
 
 
 @app.route("/add_plant", methods=["POST"])
@@ -149,7 +149,7 @@ def plant_status(plant_id):
         ).date()
     today = date.today()
     return render_template(
-        "plant.html",
+        "plant.j2",
         plant_id=plant_id,
         plant=plant,
         last_watered=last_watered,
@@ -191,7 +191,7 @@ def generate_qr_codes():
         qr_text  = qr.get_matrix()
         qr_codes[plant_id] = {"name": plant["name"], "qr": qr_text}
 
-    return render_template("qr_codes.html", qr_codes=qr_codes)
+    return render_template("qr_codes.j2", qr_codes=qr_codes)
 
 
 if __name__ == "__main__":
