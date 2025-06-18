@@ -29,7 +29,13 @@
         <button type="submit" class="water-button">Log Watering</button>
     </form>
 
-    <div class="qr-info">
+    <script>
+    function focusQrInfo(){
+        const qrElem = document.getElementsByClassName("qr-info")[0];
+        qrElem.requestFullscreen();
+    }
+    </script>
+    <div class="qr-info" allowfullscreen  allow="fullscreen" onclick="focusQrInfo()">
         <h2>QR Code Information</h2>
         <p>Paste this into a QR code generator and stick it on it's pot</p>
         <p class="qr-url">{{ request.url_root }}plant/{{ plant_id }}</p>
