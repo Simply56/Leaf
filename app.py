@@ -5,14 +5,16 @@ from datetime import datetime, date
 import os
 from werkzeug.utils import secure_filename
 import qrcode
+import tinify
 
 """
-This project specificaly avoids some new features because it is mean to be run on older versions of Python
+This project specificaly avoids some new features because it is meant to be run on older versions of Python
 """
 
 # TODO: Allow custom sorting on the home page (alphabetical, days since last watered, when was the plant added)
 
 app = Flask(__name__)
+tinify.key = "PJKGghx7hhZpt5TCyGXDNCKgNTKd2yMK" # It's a just a free tier, chill out bro
 
 # Ensure the data directory exists
 if not os.path.exists("data"):
@@ -83,6 +85,11 @@ def value_to_color(value: float, max_value: float = 10) -> str:
     return f"hsl({hue}, 100%, 40%)"
 app.jinja_env.globals['value_to_color'] = value_to_color  # as a global function
 
+
+#####################################################
+#                   ENDPOINTS                       #
+#####################################################
+
 @app.route("/")
 def index():
     plants = load_plants()
@@ -117,6 +124,7 @@ def water_plant(plant_id):
 
 @app.route("/upload_image/<plant_id>", methods=["POST"])
 def upload_image(plant_id):
+    """Compresses the image with tinify.com before storing them"""
     plants = load_plants()
     if plant_id in plants and "image" in request.files:
         file = request.files["image"]
@@ -128,6 +136,16 @@ def upload_image(plant_id):
             filename = secure_filename(f"plant_{plant_id}_{file.filename}")
             file_path = os.path.join(PLANT_IMAGES_DIR, filename)
             file.save(file_path)
+
+            # Optimize the image and overwrite it
+            source = tinify.from_file(file_path)
+            resized = source.resize(
+                method="cover",
+                width=500,
+                height=500
+            )
+
+            resized.to_file(file_path)
 
             # Update plant data
             plants[plant_id]["image_path"] = os.path.join(
