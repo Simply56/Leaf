@@ -108,6 +108,18 @@ def add_plant():
     save_plants(plants)
     return redirect(url_for("index"))
 
+@app.route("/rename/<plant_id>", methods=["POST"])
+def rename_plant(plant_id):
+    plants = load_plants()
+    if plant_id in plants:
+        new_name = request.form.get("new_name")
+        if new_name:
+            plants[plant_id]["name"] = new_name
+            save_plants(plants)
+
+    return redirect(url_for("plant_status", plant_id=plant_id))
+
+
 
 @app.route("/water/<plant_id>", methods=["POST"])
 def water_plant(plant_id):
