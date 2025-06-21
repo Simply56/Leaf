@@ -2,7 +2,36 @@
 
 {% block content %}
 <div class="plant-status">
-    <h1>{{ plant.name }}</h1>
+    <h1 id="plant_title" contenteditable="true">{{ plant.name }}</h1>
+    <script>
+        const h1 = document.getElementById("plant_title");
+
+        h1.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                renamePlant(h1.textContent)
+            }
+        })
+
+        function renamePlant(newName) {
+            const plantId = window.location.pathname.split("/").pop();
+            const formData = new FormData();
+            formData.append("new_name", newName);
+
+            fetch(`/rename/${plantId}`, {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url; // Follow the redirect manually
+                    }
+                })
+                .catch(error => {
+                    console.error("Error renaming plant:", error);
+                });
+        }
+    </script>
 
     <form id="imageUploadForm" action="{{ url_for('upload_image', plant_id=plant_id) }}" method="post"
         enctype="multipart/form-data" style="display: none;">
@@ -15,7 +44,8 @@
     <div class="watering-info">
         {% if last_watered %}
         <p>Last watered: {{ last_watered.strftime('%Y-%m-%d') }}</p>
-        <p>Days since last watering: <span style="color: {{ value_to_color(plant.watered_ago) }}">{{ plant.watered_ago }}</span></p>
+        <p>Days since last watering: <span style="color: {{ value_to_color(plant.watered_ago) }}">{{ plant.watered_ago
+                }}</span></p>
         {% else %}
         <p>This plant has never been watered.</p>
         {% endif %}
@@ -30,12 +60,12 @@
     </form>
 
     <script>
-    function focusQrInfo(){
-        const qrElem = document.getElementsByClassName("qr-info")[0];
-        qrElem.requestFullscreen();
-    }
+        function focusQrInfo() {
+            const qrElem = document.getElementsByClassName("qr-info")[0];
+            qrElem.requestFullscreen();
+        }
     </script>
-    <div class="qr-info" allowfullscreen  allow="fullscreen" onclick="focusQrInfo()">
+    <div class="qr-info" allowfullscreen allow="fullscreen" onclick="focusQrInfo()">
         <h2>QR Code Information</h2>
         <p>Paste this into a QR code generator and stick it on it's pot</p>
         <p class="qr-url">{{ request.url_root }}plant/{{ plant_id }}</p>
