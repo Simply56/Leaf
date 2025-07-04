@@ -14,7 +14,7 @@ This project specificaly avoids some new features because it is meant to be run 
 # TODO: Allow custom sorting on the home page (alphabetical, days since last watered, when was the plant added)
 
 app = Flask(__name__)
-tinify.key = "PJKGghx7hhZpt5TCyGXDNCKgNTKd2yMK" # It's a just a free tier, chill out bro
+tinify.key = "PJKGghx7hhZpt5TCyGXDNCKgNTKd2yMK"  # It's a just a free tier, chill out bro
 
 # Ensure the data directory exists
 if not os.path.exists("data"):
@@ -79,6 +79,7 @@ def save_plants(plants):
     with open(DATA_FILE, "w") as f:
         json.dump(plants, f)
 
+
 @app.template_global()
 def value_to_color(value: float, max_value: float = 10) -> str:
     ratio = min(value / max_value, 1)
@@ -89,6 +90,7 @@ def value_to_color(value: float, max_value: float = 10) -> str:
 #####################################################
 #                   ENDPOINTS                       #
 #####################################################
+
 
 @app.route("/")
 def index():
@@ -108,6 +110,7 @@ def add_plant():
     save_plants(plants)
     return redirect(url_for("index"))
 
+
 @app.route("/rename/<plant_id>", methods=["POST"])
 def rename_plant(plant_id):
     plants = load_plants()
@@ -118,7 +121,6 @@ def rename_plant(plant_id):
             save_plants(plants)
 
     return redirect(url_for("plant_status", plant_id=plant_id))
-
 
 
 @app.route("/water/<plant_id>", methods=["POST"])
@@ -151,11 +153,7 @@ def upload_image(plant_id):
 
             # Optimize the image and overwrite it
             source = tinify.from_file(file_path)
-            resized = source.resize(
-                method="cover",
-                width=500,
-                height=500
-            )
+            resized = source.resize(method="cover", width=500, height=500)
 
             resized.to_file(file_path)
 
@@ -218,7 +216,7 @@ def generate_qr_codes():
         qr.make(fit=True)
 
         # Get QR code as text
-        qr_text  = qr.get_matrix()
+        qr_text = qr.get_matrix()
         qr_codes[plant_id] = {"name": plant["name"], "qr": qr_text}
 
     return render_template("qr_codes.j2", qr_codes=qr_codes)
