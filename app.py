@@ -1,3 +1,4 @@
+import socket
 from flask import Flask, render_template, request, redirect, url_for
 import sys
 import json
@@ -222,9 +223,22 @@ def generate_qr_codes():
     return render_template("qr_codes.j2", qr_codes=qr_codes)
 
 
+def get_private_ip() -> str:
+    """Get the machine's private IP address (not 127.0.0.1)."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # Doesn't have to be reachable — just used to infer the local IP
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
+
+
 if __name__ == "__main__":
-    # Example: python3 app.py debug
-    if len(sys.argv) == 2 and sys.argv[1].lower() == "debug":
-        app.run(host="0.0.0.0", port=5000, debug=True)
-    else:
-        app.run(host="0.0.0.0", port=5000, debug=False)
+    args = set(map(lambda x: x.lower(), sys.argv[1:]))
+
+    host = get_private_ip() if "private" in args else "0.0.0.0"
+    debug = "debug" in args
+
+    app.run(host=host, port=5000, debug=debug)
